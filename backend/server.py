@@ -307,7 +307,12 @@ async def process_claim_results(session_id: str, results: list):
                 error_message=result.get('error')
             )
             
-            await db.claim_logs.insert_one(claim_log.dict())
+            # Convert to dict and remove any ObjectId issues
+            claim_dict = claim_log.dict()
+            if '_id' in claim_dict:
+                del claim_dict['_id']  # Let MongoDB generate its own _id
+            
+            await db.claim_logs.insert_one(claim_dict)
             
             # Update session stats
             with session_lock:
