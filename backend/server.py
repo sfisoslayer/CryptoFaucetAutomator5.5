@@ -458,6 +458,10 @@ async def get_claim_logs(limit: int = 100):
     """Get recent claim logs"""
     try:
         logs = await db.claim_logs.find().sort("timestamp", -1).limit(limit).to_list(limit)
+        # Convert MongoDB ObjectIds to strings for JSON serialization
+        for log in logs:
+            if '_id' in log:
+                log['_id'] = str(log['_id'])
         return logs
     except Exception as e:
         logging.error(f"Failed to get claim logs: {e}")
