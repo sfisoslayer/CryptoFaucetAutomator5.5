@@ -159,7 +159,10 @@ async def send_bitcoin_transaction(to_address: str, amount: float) -> dict:
         }
         
         # Save transaction to database
-        await db.transactions.insert_one(tx_data)
+        tx_dict = tx_data.copy()
+        if '_id' in tx_dict:
+            del tx_dict['_id']  # Let MongoDB generate its own _id
+        await db.transactions.insert_one(tx_dict)
         
         logging.info(f"Transaction broadcasted: {tx_data['tx_hash']}")
         return tx_data
