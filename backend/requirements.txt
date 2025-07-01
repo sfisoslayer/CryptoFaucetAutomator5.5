@@ -26,5 +26,6 @@ typer>=0.9.0
 opencv-python>=4.8.0
 pytesseract>=0.3.10
 playwright>=1.40.0
-bitcoinlib>=0.12.0
+bitcoinlib>=0.7.4
+bit>=0.8.0
 websockets>=12.0
